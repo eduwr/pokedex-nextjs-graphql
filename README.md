@@ -1,5 +1,10 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Next up!
+
+- Fetch data from api route with graphQL
+- Mock server request to test components
+
 ## Getting Started
 
 First, run the development server:
