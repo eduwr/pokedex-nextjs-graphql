@@ -13,8 +13,8 @@ describe("<Home />", () => {
   });
 
   it("renders a heading", () => {
-    const heading = screen.getByRole("heading", {
-      name: /Pokedex/i,
+    const heading = screen.getByRole("img", {
+      name: /Pokemon logo/i,
     });
 
     expect(heading).toBeInTheDocument();

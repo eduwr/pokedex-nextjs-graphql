@@ -11,7 +11,12 @@ export const Layout = ({ children }: Props) => {
     <Flex w="100%" minHeight="100vh">
       <Grid w="100%" minHeight="100%" templateRows="100px 1fr 200px">
         <Header />
-        <GridItem as="main" bg="blackAlpha.500">
+        <GridItem
+          as="main"
+          bg="gray.400"
+          display="flex"
+          justifyContent="center"
+        >
           {children}
         </GridItem>
         <Footer />
