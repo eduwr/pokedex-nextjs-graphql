@@ -65,6 +65,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
         bottom={0}
         display="flex"
         justifyContent="flex-end"
+        boxShadow="lg"
         {...backgroundColor}
       >
         <Text color="whiteAlpha.600" mr="2" fontWeight="bold" fontSize="5xl">
@@ -79,6 +80,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
         px="3"
         display="flex"
         justifyContent="flex-end"
+        borderBottomRadius="xl"
       >
         <Heading as="h3" size="lg">
           {pokemon.name}
