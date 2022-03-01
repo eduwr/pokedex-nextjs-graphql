@@ -1,5 +1,27 @@
 import { BasePokemonEntity } from "./BasePokemonEntity";
 
+export type PokemonTypes =
+  | "normal"
+  | "fighting"
+  | "flying"
+  | "poison"
+  | "ground"
+  | "rock"
+  | "bug"
+  | "ghost"
+  | "steel"
+  | "ice"
+  | "fire"
+  | "water"
+  | "grass"
+  | "electric"
+  | "psychic"
+  | "dragon"
+  | "dark"
+  | "fairy"
+  | "unknown"
+  | "shadow";
+
 type SpritePrefix = "back" | "front";
 type SpriteSuffix = "default" | "female" | "shiny" | "shiny_female";
 type SpriteKeys = `${SpritePrefix}_${SpriteSuffix}`;
@@ -14,7 +36,7 @@ type Sprites = SpritesDefault & {
 
 interface PokemonType {
   slot: number;
-  type: BasePokemonEntity;
+  type: BasePokemonEntity<PokemonTypes>;
 }
 
 interface PokemonStat {

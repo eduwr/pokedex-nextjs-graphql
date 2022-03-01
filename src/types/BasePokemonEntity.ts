@@ -1,4 +1,4 @@
-export interface BasePokemonEntity {
-  name: string;
+export interface BasePokemonEntity<T = string> {
+  name: T;
   url: string;
 }
