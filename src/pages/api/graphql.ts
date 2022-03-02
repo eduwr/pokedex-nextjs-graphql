@@ -1,23 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { ApolloServer, gql } from "apollo-server-micro";
+import { ApolloServer } from "apollo-server-micro";
+import { resolvers } from "graphql/resolvers";
+import { typeDefs } from "graphql/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
   name: string;
-};
-
-const typeDefs = gql`
-  type Query {
-    sayHello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    sayHello() {
-      return "Hello World!";
-    },
-  },
 };
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
