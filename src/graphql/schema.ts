@@ -6,7 +6,7 @@ export const typeDefs = gql`
     url: String
   }
 
-  type GetAllPokemon {
+  type PokemonList {
     count: Int
     next: String
     previous: String
@@ -14,6 +14,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getAllPokemon: GetAllPokemon
+    pokemon(limit: Int, offset: Int): PokemonList
   }
 `;
