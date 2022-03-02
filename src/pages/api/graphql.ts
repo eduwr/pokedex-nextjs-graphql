@@ -4,6 +4,7 @@ import { resolvers } from "graphql/resolvers";
 import { typeDefs } from "graphql/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createContext } from "graphql/context";
+
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,

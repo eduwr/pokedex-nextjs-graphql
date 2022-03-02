@@ -28,10 +28,15 @@ type SpriteKeys = `${SpritePrefix}_${SpriteSuffix}`;
 
 type SpritesDefault = Record<SpriteKeys, string>;
 
-type OtherSpriteKeys = "dream_world" | "home" | "official-artwork";
+type OtherSpriteKeys =
+  | "dream_world"
+  | "home"
+  | "official-artwork"
+  | "officialArtwork"
+  | "dreamWorld";
 
 type Sprites = SpritesDefault & {
-  other: Record<OtherSpriteKeys, Partial<SpritesDefault>>;
+  other: Partial<Record<OtherSpriteKeys, Partial<SpritesDefault>>>;
 };
 
 interface PokemonType {
@@ -41,11 +46,11 @@ interface PokemonType {
 
 interface PokemonStat {
   base_stat: number;
-  effor: number;
+  effort: number;
   stat: BasePokemonEntity;
 }
 
-export interface Pokemon {
+export interface Pokemon extends BasePokemonEntity {
   id: number;
   height: number;
   weight: number;
@@ -53,4 +58,6 @@ export interface Pokemon {
   types: PokemonType[];
   stats: PokemonStat[];
   base_experience: number;
+  name: string;
+  order: number;
 }
