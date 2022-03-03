@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Next up!
 
-- Fetch data from api route with graphQL
+- (DONE)Fetch data from api route with graphQL
 - Mock server request to test components
 - Paginate pokemon list
 - Create pokemon details screen
