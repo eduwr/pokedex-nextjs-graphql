@@ -5,10 +5,12 @@ import useSWR from "swr";
 import { PokemonCard } from "components/PokemonCard";
 import { request } from "graphql-request";
 
-const fetcher = (query: string) => request("/api/graphql", query);
+const fetcher = (query: string, variables: any) =>
+  request("/api/graphql", query, variables);
+
 const QUERY = `
-  query Pokemon {
-    pokemon {
+  query Pokemon($offset: Int) {
+    pokemon(offset: $offset) {
       count
       next
       results {
@@ -31,8 +33,10 @@ const QUERY = `
   }
 `;
 
+const variables = { offset: 0 };
+
 const Home: NextPage = () => {
-  const { data, error } = useSWR<any>(QUERY, fetcher);
+  const { data, error } = useSWR<any>([QUERY, variables], fetcher);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
