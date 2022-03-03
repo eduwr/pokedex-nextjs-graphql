@@ -1,18 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useQuery, gql } from "@apollo/client";
-import { UnorderedList, ListItem, useMediaQuery } from "@chakra-ui/react";
-
+import { UnorderedList, useMediaQuery } from "@chakra-ui/react";
 import useSWR from "swr";
-import { pokeApi } from "services/pokeApi";
-import { AxiosResponse } from "axios";
-import type { BasePokemonEntity } from "../types/BasePokemonEntity";
-import type { PokeApiListResponse } from "../types/PokeApiListResponse";
 import { PokemonCard } from "components/PokemonCard";
 import { request } from "graphql-request";
 
 const fetcher = (query: string) => request("/api/graphql", query);
-const QUERY = gql`
+const QUERY = `
   query Pokemon {
     pokemon {
       count
@@ -36,6 +30,7 @@ const QUERY = gql`
     }
   }
 `;
+
 const Home: NextPage = () => {
   const { data, error } = useSWR<any>(QUERY, fetcher);
 
