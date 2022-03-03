@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-
+import { useQuery, gql } from "@apollo/client";
 import { UnorderedList, ListItem, useMediaQuery } from "@chakra-ui/react";
 
 import useSWR from "swr";
@@ -9,11 +9,35 @@ import { AxiosResponse } from "axios";
 import type { BasePokemonEntity } from "../types/BasePokemonEntity";
 import type { PokeApiListResponse } from "../types/PokeApiListResponse";
 import { PokemonCard } from "components/PokemonCard";
+import { request } from "graphql-request";
 
+const fetcher = (query: string) => request("/api/graphql", query);
+const QUERY = gql`
+  query Pokemon {
+    pokemon {
+      count
+      next
+      results {
+        id
+        name
+        types {
+          type {
+            name
+          }
+        }
+        sprites {
+          other {
+            officialArtwork {
+              front_default
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 const Home: NextPage = () => {
-  const { data, error } = useSWR<
-    AxiosResponse<PokeApiListResponse<BasePokemonEntity[]>>
-  >("/pokemon", (url) => pokeApi.get(url));
+  const { data, error } = useSWR<any>(QUERY, fetcher);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -37,7 +61,7 @@ const Home: NextPage = () => {
         m={0}
         data-testid="pokemon-list"
       >
-        {data?.data.results.map((item) => (
+        {data?.pokemon.results.map((item: any) => (
           <PokemonCard key={item.name} pokemon={item} />
         ))}
       </UnorderedList>

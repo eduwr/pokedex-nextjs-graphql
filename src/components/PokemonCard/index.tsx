@@ -1,37 +1,24 @@
 import { ListItem, Box, Container, Text, Heading } from "@chakra-ui/react";
 import axios, { AxiosResponse } from "axios";
 import useSWR from "swr";
-import { BasePokemonEntity } from "types/BasePokemonEntity";
+
 import { Pokemon } from "types/Pokemon";
 import Image from "next/image";
 import { pokemonColors } from "../../styles/pokemonColors";
 import { useMemo } from "react";
 
 interface Props {
-  pokemon: BasePokemonEntity;
+  pokemon: Pokemon;
 }
 
 export const PokemonCard = ({ pokemon }: Props) => {
-  const { data, error } = useSWR<AxiosResponse<Pokemon>>(
-    pokemon.url,
-    axios.get
-  );
-
-  const image = data?.data.sprites.other["official-artwork"].front_default;
-
-  const formatPokemonId = (id: number | undefined) => {
-    if (!id) {
-      return "000";
-    }
-
-    return id.toString().padStart(3, "00");
-  };
+  const { sprites, types, id, name } = pokemon;
 
   const backgroundColor = useMemo(() => {
-    if (!data?.data.types) {
+    if (!pokemon.types) {
       return {};
     }
-    const typeNames = data?.data.types.map((type) => type.type.name);
+    const typeNames = pokemon.types.map((type) => type.type.name);
     const colors = pokemonColors.getPokemonColors(typeNames);
 
     if (colors.length > 1) {
@@ -43,7 +30,21 @@ export const PokemonCard = ({ pokemon }: Props) => {
     return {
       bg: colors[0],
     };
-  }, [data?.data.types]);
+  }, [pokemon.types]);
+
+  const image = pokemon.sprites.other.officialArtwork?.front_default;
+
+  const formatPokemonId = (id: number | undefined) => {
+    if (!id) {
+      return "000";
+    }
+
+    return id.toString().padStart(3, "00");
+  };
+
+  if (!sprites || !types || !id || !name) {
+    return <></>;
+  }
 
   return (
     <ListItem
@@ -69,7 +70,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
         {...backgroundColor}
       >
         <Text color="whiteAlpha.600" mr="2" fontWeight="bold" fontSize="5xl">
-          {formatPokemonId(data?.data.id)}
+          {formatPokemonId(pokemon.id)}
         </Text>
       </Box>
       <Box
