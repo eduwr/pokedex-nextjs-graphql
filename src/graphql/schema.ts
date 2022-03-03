@@ -6,13 +6,6 @@ export const typeDefs = gql`
     url: String
   }
 
-  type PokemonList {
-    count: Int
-    next: String
-    previous: String
-    results: [BasePokemonEntity]!
-  }
-
   type SpritesDefault {
     back_default: String
     back_female: String
@@ -63,6 +56,14 @@ export const typeDefs = gql`
     types: [PokemonType]
     stats: PokemonStat
     base_experience: Int
+    url: String
+  }
+
+  type PokemonList {
+    count: Int
+    next: String
+    previous: String
+    results: [Pokemon]!
   }
 
   type Query {
