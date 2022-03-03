@@ -1,4 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+# GraphQL Pokedex
+
+Project to implemnet a pokedex with Next.js and GraphQL.
+
+## Tools
+
+- Next.js
+- Apollo Server
+- SWR
+- ChakraUI
+- Jest
+- graphql-request
+
+## UI Project
+
+- [Figma](https://www.figma.com/file/8CyVossJ6Peqf3SMSiJWB8/Pokedex?node-id=0%3A1)
 
 ## Next up!
 
@@ -21,11 +37,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+[GraphQL playground](https://www.apollographql.com/docs/apollo-server/v2/testing/graphql-playground/) can be accessed on [http://localhost:3000/api/graphql](http://localhost:3000/api/graphql). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages. We have only one api route in this project. Apollo server is responsible for handling the requests with the resolvers in `graphql/resolvers` folder.
+
+
+
 
 ## Learn More
+
+### Next.js
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -34,7 +55,11 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Apollo Server
+
+- [Apollo Server Documentation](https://www.apollographql.com/docs/) - learn about Apollo Server features.
+
+### Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
