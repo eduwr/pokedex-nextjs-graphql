@@ -63,11 +63,11 @@ export const typeDefs = gql`
     count: Int
     next: String
     previous: String
-    results: [Pokemon]!
+    results: [BasePokemonEntity]!
   }
 
   type Query {
     pokemon(limit: Int, offset: Int): PokemonList
-    pokemonById(id: ID!): Pokemon
+    pokemonByNameOrId(id: ID, name: String): Pokemon
   }
 `;

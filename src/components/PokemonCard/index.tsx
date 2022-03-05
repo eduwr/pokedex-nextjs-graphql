@@ -1,24 +1,63 @@
 import { ListItem, Box, Container, Text, Heading } from "@chakra-ui/react";
-import axios, { AxiosResponse } from "axios";
 import useSWR from "swr";
 
 import { Pokemon } from "types/Pokemon";
 import Image from "next/image";
 import { pokemonColors } from "../../styles/pokemonColors";
 import { useMemo } from "react";
+import { BasePokemonEntity } from "types/BasePokemonEntity";
+import { fetcher } from "services/fetcher";
+
+const POKEMON_BY_NAME = `
+  query PokemonByNameOrId($name: String) {
+    pokemonByNameOrId(name: $name) {
+      id
+      name
+      types {
+        type {
+          name
+        }
+      }
+      sprites {
+        other {
+          officialArtwork {
+            front_default
+          }
+        }
+      }
+    }
+  }
+`;
+
+interface ResponseByNameOrId {
+  pokemonByNameOrId: Pokemon;
+}
 
 interface Props {
-  pokemon: Pokemon;
+  pokemon: BasePokemonEntity;
 }
 
 export const PokemonCard = ({ pokemon }: Props) => {
-  const { sprites, types, id, name } = pokemon;
+  const { name } = pokemon;
+
+  const variables = {
+    name,
+  };
+
+  const { data, error } = useSWR<ResponseByNameOrId>(
+    [POKEMON_BY_NAME, variables],
+    fetcher
+  );
+
+  data?.pokemonByNameOrId;
 
   const backgroundColor = useMemo(() => {
-    if (!pokemon.types) {
+    if (!data?.pokemonByNameOrId.types) {
       return {};
     }
-    const typeNames = pokemon.types.map((type) => type.type.name);
+    const typeNames = data?.pokemonByNameOrId.types.map(
+      ({ type }) => type.name
+    );
     const colors = pokemonColors.getPokemonColors(typeNames);
 
     if (colors.length > 1) {
@@ -30,9 +69,10 @@ export const PokemonCard = ({ pokemon }: Props) => {
     return {
       bg: colors[0],
     };
-  }, [pokemon.types]);
+  }, [data?.pokemonByNameOrId.types]);
 
-  const image = pokemon.sprites.other.officialArtwork?.front_default;
+  const image =
+    data?.pokemonByNameOrId.sprites.other.officialArtwork?.front_default;
 
   const formatPokemonId = (id: number | undefined) => {
     if (!id) {
@@ -42,8 +82,8 @@ export const PokemonCard = ({ pokemon }: Props) => {
     return id.toString().padStart(3, "00");
   };
 
-  if (!sprites || !types || !id || !name) {
-    return <></>;
+  if (error) {
+    return <span>Error!</span>;
   }
 
   return (
@@ -70,7 +110,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
         {...backgroundColor}
       >
         <Text color="whiteAlpha.600" mr="2" fontWeight="bold" fontSize="5xl">
-          {formatPokemonId(pokemon.id)}
+          {formatPokemonId(data?.pokemonByNameOrId.id)}
         </Text>
       </Box>
       <Box

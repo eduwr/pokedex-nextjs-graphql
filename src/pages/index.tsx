@@ -4,39 +4,36 @@ import { UnorderedList, useMediaQuery } from "@chakra-ui/react";
 import useSWR from "swr";
 import { PokemonCard } from "components/PokemonCard";
 import { request } from "graphql-request";
+import { PokeApiList } from "types/PokeApiListResponse";
+import { BasePokemonEntity } from "types/BasePokemonEntity";
 
 const fetcher = (query: string, variables: any) =>
   request("/api/graphql", query, variables);
 
-const QUERY = `
+const POKEMON_QUERY = `
   query Pokemon($offset: Int) {
     pokemon(offset: $offset) {
       count
       next
       results {
-        id
+        url
         name
-        types {
-          type {
-            name
-          }
-        }
-        sprites {
-          other {
-            officialArtwork {
-              front_default
-            }
-          }
-        }
       }
     }
   }
 `;
 
+type FetchResponse = {
+  pokemon: PokeApiList;
+};
+
 const variables = { offset: 0 };
 
 const Home: NextPage = () => {
-  const { data, error } = useSWR<any>([QUERY, variables], fetcher);
+  const { data, error } = useSWR<FetchResponse>(
+    [POKEMON_QUERY, variables],
+    fetcher
+  );
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -60,9 +57,10 @@ const Home: NextPage = () => {
         m={0}
         data-testid="pokemon-list"
       >
-        {data?.pokemon.results.map((item: any) => (
+        {data?.pokemon.results.map((item: BasePokemonEntity) => (
           <PokemonCard key={item.name} pokemon={item} />
         ))}
+        {error && <span>{JSON.stringify(error)}</span>}
       </UnorderedList>
     </>
   );

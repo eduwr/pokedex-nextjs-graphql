@@ -1,6 +1,6 @@
-import { Axios, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { BasePokemonEntity } from "types/BasePokemonEntity";
-import { PokeApiListResponse } from "types/PokeApiListResponse";
+import { PokeApiList } from "types/PokeApiListResponse";
 import { Pokemon } from "types/Pokemon";
 import type { Context } from "./context";
 
@@ -11,10 +11,12 @@ type PokemonArgs = {
 
 type PokemonByIdArgs = {
   id: number;
+  name: string;
 };
 
 const parseOtherSpritesData = (response: AxiosResponse<Pokemon>) => {
   let _response = response;
+
   _response.data.sprites.other.officialArtwork =
     _response.data.sprites.other["official-artwork"];
 
@@ -38,41 +40,25 @@ export const resolvers = {
       const query = `?limit=${limit}&offset=${offset}`;
 
       const response = await context.pokeApi.get<
-        PokeApiListResponse<BasePokemonEntity[]>
+        PokeApiList<BasePokemonEntity[]>
       >(`pokemon${query}`);
 
-      const promises = response.data.results.map(({ url }) =>
-        context.pokeApi.get<Pokemon>(url)
-      );
-
-      const pokemonResponse = await Promise.all(promises);
-
-      const pokemon = response.data.results.map((item, idx) => {
-        const poke = pokemonResponse[idx];
-
-        const parsedPoke = parseOtherSpritesData(poke);
-
-        return {
-          ...item,
-          ...parsedPoke.data,
-        };
-      });
-
-      return {
-        ...response.data,
-        results: pokemon,
-      };
+      return response.data;
     },
-    pokemonById: async (
+    pokemonByNameOrId: async (
       _parent: unknown,
-      { id }: PokemonByIdArgs,
+      { id, name }: PokemonByIdArgs,
       context: Context
     ) => {
-      const response = await context.pokeApi.get<Pokemon>(`pokemon/${id}`);
+      if (!id && !name) {
+        throw new Error("Pokemon $id or $name are required");
+      }
 
-      const parsedResponse = parseOtherSpritesData(response);
+      const response = await context.pokeApi.get<Pokemon>(
+        `pokemon/${id || name}`
+      );
 
-      return parsedResponse.data;
+      return parseOtherSpritesData(response).data;
     },
   },
 };
