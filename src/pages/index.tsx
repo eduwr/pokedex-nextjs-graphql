@@ -11,8 +11,8 @@ const fetcher = (query: string, variables: any) =>
   request("/api/graphql", query, variables);
 
 const POKEMON_QUERY = `
-  query Pokemon($offset: Int) {
-    pokemon(offset: $offset) {
+  query Pokemon($offset: Int, $limit: Int) {
+    pokemon(offset: $offset, limit: $limit) {
       count
       next
       results {
@@ -27,7 +27,7 @@ type FetchResponse = {
   pokemon: PokeApiList;
 };
 
-const variables = { offset: 0 };
+const variables = { offset: 0, limit: 3 };
 
 const Home: NextPage = () => {
   const { data, error } = useSWR<FetchResponse>(
