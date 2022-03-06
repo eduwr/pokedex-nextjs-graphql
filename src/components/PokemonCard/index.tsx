@@ -4,11 +4,11 @@ import useSWR from "swr";
 import { Pokemon } from "types/Pokemon";
 import Image from "next/image";
 import { pokemonColors } from "../../styles/pokemonColors";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { BasePokemonEntity } from "types/BasePokemonEntity";
 import { fetcher } from "services/fetcher";
 
-const POKEMON_BY_NAME = `
+const POKEMON_BY_NAME_OR_ID = `
   query PokemonByNameOrId($name: String) {
     pokemonByNameOrId(name: $name) {
       id
@@ -45,11 +45,9 @@ export const PokemonCard = ({ pokemon }: Props) => {
   };
 
   const { data, error } = useSWR<ResponseByNameOrId>(
-    [POKEMON_BY_NAME, variables],
+    [POKEMON_BY_NAME_OR_ID, variables],
     fetcher
   );
-
-  data?.pokemonByNameOrId;
 
   const backgroundColor = useMemo(() => {
     if (!data?.pokemonByNameOrId.types) {
